@@ -13,7 +13,9 @@
 1. **防误触握手** → 检测触发词 → 询问确认 → 等待用户回复「确认」
 2. **自动采集**（每次确认后都重新跑，确保数据最新）：
    - **自动运行 `collect/collect_daily_data.ps1`**（约 10 秒）
-   - 读取生成的 JSON（AW 时间分类 / onefetch 仓库快照 / git 提交统计 / 终端历史）
+   - 读取生成的 JSON（路径：`<日志根目录>\Josn\daily_data_YYYY-MM-DD.json`）
+   - JSON 字段：AW 时间分类 / onefetch 仓库快照 / git 提交统计 / 终端历史
+   - 同天旧 JSON 自动备份到 `<日志根目录>\Josn\Prev\daily_data_prev_YYYY-MM-DD_HHmm.json`
 3. **数据提取** → 本对话框核心代码变更 + 关键 Prompt + 最终方案（过滤报错/重试）
 4. **路径锁定** → 目标：`<YOUR_LOG_DIR>`（替换为你的实际日志归档路径）
 5. **检查同天日志** → 扫描 `<YOUR_LOG_DIR>` 下是否有今天（`YYYYMMDD`）的日志文件

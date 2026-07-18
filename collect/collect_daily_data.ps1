@@ -28,20 +28,25 @@ param(
 # 修改为你的实际项目路径，或保持空数组仅用单仓库模式
 $WORKSPACE_ROOTS = @()
 
+# JSON 输出目录（默认为 ~/.claude/temp，修改为你的日志归档路径）
+$OUTPUT_BASE_DIR = "E:\AAA.Program\CC\程序员日志\Josn"
+
 # ═══════════════════════════════════════════════════════════
 # 内 部 配 置 （通常无需修改）
 # ═══════════════════════════════════════════════════════════
 
 $today      = (Get-Date).ToString("yyyy-MM-dd")
-$outputDir  = "$env:USERPROFILE\.claude\temp"
+$now       = (Get-Date).ToString("HHmm")
+$outputDir  = $OUTPUT_BASE_DIR
 $configDir  = Split-Path -Parent $PSCommandPath
 
 $categoriesPath  = "$configDir\activity_categories.json"
 $sensitivePath   = "$configDir\sensitive_patterns.json"
 $schemaPath      = "$configDir\daily_data_schema.json"
-$auditLogPath    = "$outputDir\collect_audit.log"
+$prevDir         = "$outputDir\Prev"
+$auditLogPath    = "$prevDir\collect_audit.log"
 $outputPath      = "$outputDir\daily_data_$today.json"
-$outputPrevPath  = "$outputDir\daily_data_prev.json"
+$outputPrevPath  = "$prevDir\daily_data_prev_$today`_$now.json"
 
 # ─── 辅助函数 ──────────────────────────────────────────
 
@@ -367,6 +372,7 @@ function Out-DailyData {
     if ($DryRun) {
         Write-Host "`n=== DryRun 预览 ===" -ForegroundColor Cyan
         Write-Host "输出路径: $outputPath"
+        Write-Host "备份目录: $prevDir"
         if ($AllRepos) { Write-Host "模式: 多仓库 ($($WORKSPACE_ROOTS.Count) 个工作区)" -ForegroundColor Yellow }
         else { Write-Host "模式: 单仓库 (当前目录)" }
         Write-Host "`n[数据源状态]"
@@ -396,11 +402,15 @@ function Out-DailyData {
         error = $null
     }
 
+    # 确保目录存在
     if (-not (Test-Path $outputDir)) { New-Item -ItemType Directory -Path $outputDir -Force | Out-Null }
+    if (-not (Test-Path $prevDir))   { New-Item -ItemType Directory -Path $prevDir -Force | Out-Null }
 
+    # 如果有同天旧 JSON，备份到 Prev 目录（带时间戳）
     if (Test-Path $outputPath) {
         Copy-Item $outputPath $outputPrevPath -Force
-        Write-Audit "rotated previous output to $outputPrevPath"
+        Write-Audit "backed up previous output to $outputPrevPath"
+        Write-Host "  → 旧版已备份: $outputPrevPath" -ForegroundColor Gray
     }
 
     $json = $data | ConvertTo-Json -Depth 10
@@ -409,9 +419,10 @@ function Out-DailyData {
     Write-Host "`n✓ 数据已写入: $outputPath" -ForegroundColor Green
     Write-Audit "output written: $outputPath"
 
-    Get-ChildItem "$outputDir\daily_data_*.json" -ErrorAction SilentlyContinue |
-        Where-Object { $_.LastWriteTime -lt (Get-Date).AddDays(-7) -and $_.Name -ne "daily_data_prev.json" } |
-        ForEach-Object { Remove-Item $_.FullName -Force; Write-Audit "cleaned up old: $($_.Name)" }
+    # 清理 Prev 目录中超过 7 天的旧备份
+    Get-ChildItem "$prevDir\daily_data_prev_*.json" -ErrorAction SilentlyContinue |
+        Where-Object { $_.LastWriteTime -lt (Get-Date).AddDays(-7) } |
+        ForEach-Object { Remove-Item $_.FullName -Force; Write-Audit "cleaned up old prev: $($_.Name)" }
 }
 
 # ─── 主流程 ───────────────────────────────────────────
@@ -420,6 +431,7 @@ Write-Host "=== 程序员日志数据采集 ===" -ForegroundColor Cyan
 Write-Host "日期: $today`n"
 
 if (-not (Test-Path $outputDir)) { New-Item -ItemType Directory -Path $outputDir -Force | Out-Null }
+if (-not (Test-Path $prevDir))   { New-Item -ItemType Directory -Path $prevDir -Force | Out-Null }
 
 $awData    = Get-ActivityWatchData -DryRun:$DryRun
 $repoSnap  = Get-OnefetchSnapshot -DryRun:$DryRun
