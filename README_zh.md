@@ -2,11 +2,11 @@
   <kbd>🇨🇳 中文</kbd> · <a href="README.md"><kbd>🇺🇸 English</kbd></a>
 </p>
 
-<h1 align="center">Dev-Log Tool V2.1</h1>
+<h1 align="center">Dev-Log Tool V2.2</h1>
 <p align="center"><b>跨工作区的 Claude Code 开发者日志归档工具 — 含量化数据集成</b></p>
 
 <p align="center">
-  <img src="https://img.shields.io/badge/version-2.1-blue" alt="Version">
+  <img src="https://img.shields.io/badge/version-2.2-blue" alt="Version">
   <img src="https://img.shields.io/badge/license-MIT-brightgreen" alt="License">
 </p>
 

@@ -2,11 +2,11 @@
   <a href="README_zh.md"><kbd>🇨🇳 中文</kbd></a> · <kbd>🇺🇸 English</kbd>
 </p>
 
-<h1 align="center">Dev-Log Tool V2.1</h1>
+<h1 align="center">Dev-Log Tool V2.2</h1>
 <p align="center"><b>Cross-workspace developer journal for Claude Code — with quantified data fusion</b></p>
 
 <p align="center">
-  <img src="https://img.shields.io/badge/version-2.1-blue" alt="Version">
+  <img src="https://img.shields.io/badge/version-2.2-blue" alt="Version">
   <img src="https://img.shields.io/badge/license-MIT-brightgreen" alt="License">
 </p>
 
