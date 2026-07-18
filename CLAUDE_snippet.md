@@ -1,4 +1,4 @@
-## 📅 程序员日志归档工作流 V2.1
+## 📅 程序员日志归档工作流 V2.2
 
 > **JIT 路由表集成说明**：在 CC 项目架构中，此内容通过 CLAUDE.md `## ⚡ JIT 懒加载路由表` 注册于 `spec/log_templates.md`。当用户说「日志/归档/程序员日志」时，路由表触发前置读取该文件。本 snippet 是独立仓库分发的同源副本，若你的 CLAUDE.md 使用 JIT 路由表，将本内容放入 `.claude/spec/log_templates.md` 即可自动响应。
 >
@@ -11,14 +11,22 @@
 ### 流程
 
 1. **防误触握手** → 检测触发词 → 询问确认 → 等待用户回复「确认」
-2. **量化数据检测**（V2.0+）：
-   - 检查 `%USERPROFILE%\.claude\temp\daily_data_YYYYMMDD.json` 是否存在
-   - 存在 → 读取量化字段（时间分类 / 仓库快照 / Git 统计 / 终端历史）
-   - 不存在 → 询问用户是否运行收集脚本
+2. **自动采集**（每次确认后都重新跑，确保数据最新）：
+   - **自动运行 `collect/collect_daily_data.ps1`**（约 10 秒）
+   - 读取生成的 JSON（路径：`<日志根目录>\Josn\daily_data_YYYY-MM-DD_HHmm.json`）
+   - JSON 字段：AW 时间分类 / onefetch 仓库快照 / git 提交统计 / 终端历史
+   - 同天旧 JSON 自动移入 `<日志根目录>\Josn\Prev\`
 3. **数据提取** → 今日核心代码变更 + 关键 Prompt + 最终方案（过滤报错/重试）
 4. **路径锁定** → 目标：`<YOUR_LOG_DIR>`（替换为你的实际日志归档路径）
-5. **序号命名** → `NN_关于<概要>的日志_<工作区>_YYYYMMDD_HHmm.md`（HHmm 必填，24小时制）
-6. **结构化输出** → 固定 8 字段 Markdown 模板（见下方）
+5. **检查同天日志** → 扫描 `<YOUR_LOG_DIR>` 下是否有今天（`YYYYMMDD`）的日志文件
+   - 有 → **读取现有日志内容，按第 7 步合并**
+   - 无 → **新建文件，走序号分配**
+6. **序号命名** → `NN_关于<概要>的日志_<工作区>_YYYYMMDD_HHmm.md`（HHmm 必填，24小时制）
+   - 新建时：扫描目录最大序号 + 1
+   - 合并时：保留原始文件名，不重新编号
+7. **结构化输出** → 固定 8 字段 Markdown 模板（见下方）
+   - **新建**：直接写入完整 8 字段头 + 正文
+   - **合并**：在现有日志末尾附加 `## 时段N：标题（HH:MM–HH:MM）` 分区，不重复 8 字段头
 
 ### 模板（完整态 — 量化数据完整）
 
@@ -81,10 +89,10 @@
 如果日志流程出现异常（数据找不到、路径不匹配、字段缺失），运行以下检查脚本诊断：
 
 ```powershell
-& '<YOUR_PROJECT_ROOT>\tools\check_config_consistency.ps1'
+# 替换 <YOUR_COLLECT_DIR> 为你的 collect/ 实际路径
+Test-Path "<YOUR_COLLECT_DIR>\activity_categories.json"
+Test-Path "<YOUR_COLLECT_DIR>\sensitive_patterns.json"
 ```
-
-（替换 `<YOUR_PROJECT_ROOT>` 为你的实际项目根路径）
 
 ### 约束
 

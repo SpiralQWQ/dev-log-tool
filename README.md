@@ -90,6 +90,15 @@ dev-log-tool/
 
 ## Changelog
 
+### V2.2 (2026-07-18)
+- **One-shot auto collect**: `程序员日志` trigger auto-runs `collect_daily_data.ps1` every time
+- **HHmm JSON naming**: `daily_data_YYYY-MM-DD.json` → `daily_data_YYYY-MM-DD_HHmm.json`
+- **Prev backup**: Old same-day JSON auto-moved to `Josn\Prev\` dir, 7-day retention
+- **Same-day log merge**: Scans log dir for today's file — merges if exists, creates if not
+- **Four-way quality check**: QwenMax + GLM-4.5-Air + Gemini 3.5 Flash + Claude all passed (GLM 9.8/10)
+- **Security patch**: Added `.gitignore` (ignores `模型协同日志/` local audit dir)
+- **UTF-8 BOM fix**: Resolved PowerShell 5.1 Chinese character encoding
+
 ### V2.1 (2026-07-18)
 - **JIT routing table architecture**: New `CLAUDE.template.md` (~40 lines) + modular `spec/` directory
 - **Data pipeline**: New `collect/` directory with generic script + 3 config files

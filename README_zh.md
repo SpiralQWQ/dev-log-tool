@@ -90,6 +90,15 @@ dev-log-tool/
 
 ## 更新日志
 
+### V2.2 (2026-07-18)
+- **一步到位自动采集**：每次「程序员日志」自动运行 `collect_daily_data.ps1`，不再询问是否采集
+- **HHmm JSON 命名**：JSON 文件名从 `daily_data_YYYY-MM-DD.json` → `daily_data_YYYY-MM-DD_HHmm.json`
+- **Prev 备份机制**：同天旧 JSON 自动移入 `Josn\Prev\` 目录，保留 7 天
+- **同天日志检测合并**：先扫描日志目录是否有今天文件，有则合并追加、无则新建
+- **四方质检验证**：QwenMax + GLM-4.5-Air + Gemini 3.5 Flash + Claude 全线通过（GLM 9.8/10）
+- **安全补漏**：新增 `.gitignore`（忽略 `模型协同日志/` 本地审计目录）
+- **UTF-8 BOM 编码**：修复 PowerShell 5.1 中文乱码问题
+
 ### V2.1 (2026-07-18)
 - **JIT 路由表架构**：新增 `CLAUDE.template.md`（~40 行） + `spec/` 目录模块化
 - **数据采集管线**：新增 `collect/` 目录，包含通用采集脚本 + 3 个配置文件
