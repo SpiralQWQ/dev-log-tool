@@ -1,4 +1,4 @@
-<#
+﻿<#
 .SYNOPSIS
     采集今日量化数据：ActivityWatch 时间追踪 + onefetch 仓库快照 + git 提交统计 + 终端历史
 .DESCRIPTION
@@ -433,3 +433,4 @@ if (-not $DryRun) {
     Write-Host "`n=== 采集完成 ===" -ForegroundColor Cyan
     Write-Host "审计日志: $auditLogPath"
 }
+
