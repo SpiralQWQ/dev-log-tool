@@ -76,16 +76,16 @@ cp -r spec/ <你的项目>/spec/
 dev-log-tool/
 ├── README.md                     ← English
 ├── README_zh.md                  ← 中文（你在这里）
-├── CLAUDE.template.md            (~40行) JIT 路由表 + 核心规则（V2.1 新增）
-├── CLAUDE_snippet.md             V2.0 规则片段（直接粘贴到 CLAUDE.md）
-├── collect/                      ⬅ V2.1 量化数据采集管线
-│   ├── collect_daily_data.ps1    通用数据采集脚本
-│   ├── activity_categories.json  ActivityWatch 窗口分类映射
-│   ├── sensitive_patterns.json   终端历史敏感词过滤规则
-│   └── daily_data_schema.json    JSON 输出 Schema
-└── spec/                         ⬅ V2.1 模块化规范，JIT 路由表按需加载
+├── CLAUDE.template.md            (~50行) JIT 路由表 + 核心规则（V2.2）
+├── CLAUDE_snippet.md             V2.2 独立规则片段（直接粘贴到 CLAUDE.md）
+├── collect/                      ⬅ V2.2 量化数据采集管线
+│   ├── collect_daily_data.ps1    通用数据采集脚本（V2.1 起；V2.2 新增 HHmm+Prev 旋转）
+│   ├── activity_categories.json  ActivityWatch 窗口分类映射（静态配置）
+│   ├── sensitive_patterns.json   终端历史敏感词过滤规则（静态配置）
+│   └── daily_data_schema.json    JSON 输出 Schema（静态配置）
+└── spec/                         ⬅ V2.2 模块化规范，JIT 路由表按需加载
     ├── log_templates.md          V2.2 日志模板 + 8 字段必填规则
-    └── data_toolchain.md         量化数据管线安装与使用指南
+    └── data_toolchain.md         V2.2 量化数据管线安装与使用指南
 ```
 
 ## 更新日志

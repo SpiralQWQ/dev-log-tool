@@ -76,16 +76,16 @@ Done. A new file `01_about_xxx_CC_20260622_1825.md` appears in your log director
 dev-log-tool/
 ├── README.md                     ← English (you are here)
 ├── README_zh.md                  ← 中文
-├── CLAUDE.template.md            (~40 lines) JIT routing table + core rules (V2.1 NEW)
-├── CLAUDE_snippet.md             V2.0 rules (direct paste into CLAUDE.md)
-├── collect/                      ⬅ V2.1 Quantified data pipeline
-│   ├── collect_daily_data.ps1    Universal collection script
-│   ├── activity_categories.json  ActivityWatch window title mapping
-│   ├── sensitive_patterns.json   Terminal history filter rules
-│   └── daily_data_schema.json    JSON output schema
-└── spec/                         ⬅ V2.1 Modular specs, loaded by JIT routing table
+├── CLAUDE.template.md            (~50 lines) JIT routing table + core rules (V2.2)
+├── CLAUDE_snippet.md             V2.2 standalone rules (direct paste into CLAUDE.md)
+├── collect/                      ⬅ V2.2 Quantified data collection pipeline
+│   ├── collect_daily_data.ps1    Universal collection script (since V2.1; HHmm+Prev in V2.2)
+│   ├── activity_categories.json  ActivityWatch window title mapping (static config)
+│   ├── sensitive_patterns.json   Terminal history filter rules (static config)
+│   └── daily_data_schema.json    JSON output schema (static config)
+└── spec/                         ⬅ V2.2 Modular specs, loaded by JIT routing table
     ├── log_templates.md          V2.2 log templates + 8-field mandatory header
-    └── data_toolchain.md         Quantified data pipeline installation guide
+    └── data_toolchain.md         V2.2 quantified data pipeline installation guide
 ```
 
 ## Changelog
