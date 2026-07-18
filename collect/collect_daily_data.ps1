@@ -45,7 +45,7 @@ $sensitivePath   = "$configDir\sensitive_patterns.json"
 $schemaPath      = "$configDir\daily_data_schema.json"
 $prevDir         = "$outputDir\Prev"
 $auditLogPath    = "$prevDir\collect_audit.log"
-$outputPath      = "$outputDir\daily_data_$today.json"
+$outputPath      = "$outputDir\daily_data_$today`_$now.json"
 $outputPrevPath  = "$prevDir\daily_data_prev_$today`_$now.json"
 
 # ─── 辅助函数 ──────────────────────────────────────────
@@ -406,11 +406,25 @@ function Out-DailyData {
     if (-not (Test-Path $outputDir)) { New-Item -ItemType Directory -Path $outputDir -Force | Out-Null }
     if (-not (Test-Path $prevDir))   { New-Item -ItemType Directory -Path $prevDir -Force | Out-Null }
 
-    # 如果有同天旧 JSON，备份到 Prev 目录（带时间戳）
-    if (Test-Path $outputPath) {
-        Copy-Item $outputPath $outputPrevPath -Force
-        Write-Audit "backed up previous output to $outputPrevPath"
-        Write-Host "  → 旧版已备份: $outputPrevPath" -ForegroundColor Gray
+    # 扫描当天已有 JSON（排除本次要写的文件），移动到 Prev 目录
+    $existingToday = Get-ChildItem "$outputDir\daily_data_$today`_*.json" -ErrorAction SilentlyContinue |
+        Where-Object { $_.FullName -ne $outputPath } | Sort-Object Name -Descending
+    if ($existingToday) {
+        foreach ($oldFile in $existingToday) {
+            $oldName = $oldFile.Name
+            $destPath = "$prevDir\$oldName"
+            Move-Item $oldFile.FullName $destPath -Force
+            Write-Audit "moved old version to Prev: $oldName"
+            Write-Host "  → 旧版移入: $destPath" -ForegroundColor Gray
+        }
+    }
+    # 兼容旧命名（不带 HHmm）
+    $oldStyleFile = Get-ChildItem "$outputDir\daily_data_$today.json" -ErrorAction SilentlyContinue
+    if ($oldStyleFile) {
+        foreach ($f in $oldStyleFile) {
+            Move-Item $f.FullName "$prevDir\$($f.Name)" -Force
+            Write-Audit "moved old-style file to Prev: $($f.Name)"
+        }
     }
 
     $json = $data | ConvertTo-Json -Depth 10
@@ -420,7 +434,7 @@ function Out-DailyData {
     Write-Audit "output written: $outputPath"
 
     # 清理 Prev 目录中超过 7 天的旧备份
-    Get-ChildItem "$prevDir\daily_data_prev_*.json" -ErrorAction SilentlyContinue |
+    Get-ChildItem "$prevDir\daily_data_*.json" -ErrorAction SilentlyContinue |
         Where-Object { $_.LastWriteTime -lt (Get-Date).AddDays(-7) } |
         ForEach-Object { Remove-Item $_.FullName -Force; Write-Audit "cleaned up old prev: $($_.Name)" }
 }

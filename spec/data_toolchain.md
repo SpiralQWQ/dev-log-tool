@@ -43,7 +43,7 @@ winget install onefetch
 
 ## 输出
 
-JSON 文件自动写入 `%USERPROFILE%\.claude\temp\daily_data_YYYYMMDD.json`。
+JSON 文件自动写入 `<日志根目录>\Josn\daily_data_YYYY-MM-DD_HHmm.json`（默认路径：`E:\AAA.Program\CC\程序员日志\Josn`）。
 
 ```json
 {
