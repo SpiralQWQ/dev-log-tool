@@ -2,11 +2,11 @@
   <kbd>🇨🇳 中文</kbd> · <a href="README.md"><kbd>🇺🇸 English</kbd></a>
 </p>
 
-<h1 align="center">Dev-Log Tool V2.0</h1>
+<h1 align="center">Dev-Log Tool V2.1</h1>
 <p align="center"><b>跨工作区的 Claude Code 开发者日志归档工具 — 含量化数据集成</b></p>
 
 <p align="center">
-  <img src="https://img.shields.io/badge/version-2.0-blue" alt="Version">
+  <img src="https://img.shields.io/badge/version-2.1-blue" alt="Version">
   <img src="https://img.shields.io/badge/license-MIT-brightgreen" alt="License">
 </p>
 
@@ -20,15 +20,24 @@
 
 ## 快速开始
 
-### 第一步：添加规则
+### 方案 A：JIT 路由表模式（推荐）
 
-将 `CLAUDE_snippet.md` 的内容复制到 `~/.claude/CLAUDE.md` 末尾。
+适合已使用或准备使用 model-federation 架构的项目：
 
-### 第二步：替换路径
+```bash
+cp CLAUDE.template.md <你的项目>/.claude/CLAUDE.md
+cp -r spec/ <你的项目>/spec/
+```
 
-将 `<YOUR_LOG_DIR>` 替换为你的实际日志目录（建议使用绝对路径）。
+### 方案 B：直接粘贴模式
 
-### 第三步：使用
+适合简单项目，无需 spec/ 目录：
+
+1. 将 `CLAUDE_snippet.md` 内容追加到 `~/.claude/CLAUDE.md`
+2. 将 `<YOUR_LOG_DIR>` 替换为你的实际日志目录
+3. 将 `<YOUR_COLLECT_DIR>` 替换为 collect/ 的实际路径
+
+### 使用
 
 在 Claude Code 中说：`程序员日志` 或 `dev-log`
 
@@ -37,14 +46,15 @@
 > 确认
 ```
 
-完成。你的日志目录下会生成 `01_关于xxx的日志_CC_20260622_1825.md`。
+完成。日志目录下会生成 `01_关于xxx的日志_CC_20260622_1825.md`。
 
-### 第四步（可选）：启用量化数据
+### 启用量化数据（可选）
 
-安装 [ActivityWatch](https://activitywatch.net/) 后运行数据采集脚本：
-```bash
-pip install activitywatch  # 或从官网下载
-# 然后配置采集脚本路径到 tools/collect_daily_data.ps1
+```powershell
+# 安装 ActivityWatch（https://activitywatch.net/）
+# 确认 onefetch 在 PATH 中
+# 然后运行：
+.\collect\collect_daily_data.ps1
 ```
 
 ## 功能特性
@@ -64,12 +74,28 @@ pip install activitywatch  # 或从官网下载
 
 ```
 dev-log-tool/
-├── README.md          ← English
-├── README_zh.md       ← 中文（你在这里）
-└── CLAUDE_snippet.md  ← V2.0 规则片段（粘贴到你的 CLAUDE.md）
+├── README.md                     ← English
+├── README_zh.md                  ← 中文（你在这里）
+├── CLAUDE.template.md            (~40行) JIT 路由表 + 核心规则（V2.1 新增）
+├── CLAUDE_snippet.md             V2.0 规则片段（直接粘贴到 CLAUDE.md）
+├── collect/                      ⬅ V2.1 量化数据采集管线
+│   ├── collect_daily_data.ps1    通用数据采集脚本
+│   ├── activity_categories.json  ActivityWatch 窗口分类映射
+│   ├── sensitive_patterns.json   终端历史敏感词过滤规则
+│   └── daily_data_schema.json    JSON 输出 Schema
+└── spec/                         ⬅ V2.1 模块化规范，JIT 路由表按需加载
+    ├── log_templates.md          V2.2 日志模板 + 8 字段必填规则
+    └── data_toolchain.md         量化数据管线安装与使用指南
 ```
 
 ## 更新日志
+
+### V2.1 (2026-07-18)
+- **JIT 路由表架构**：新增 `CLAUDE.template.md`（~40 行） + `spec/` 目录模块化
+- **数据采集管线**：新增 `collect/` 目录，包含通用采集脚本 + 3 个配置文件
+- **双模部署**：支持 JIT 路由表模式（适合 model-federation 用户）和直接粘贴模式
+- **spec/data_toolchain.md**：量化数据管线的完整安装指南 + Windows 定时任务示例
+- **[联动] model-federation**：两仓库 README 互相引用，配套使用
 
 ### V2.0 (2026-07-18)
 - **量化数据集成**：ActivityWatch 时间分类 + onefetch 仓库快照 + git 提交统计 + 终端历史
@@ -82,6 +108,10 @@ dev-log-tool/
 ### V1.0 (2026-06-22)
 - 初始版本：触发词 → 确认 → 提取 → 日志文件
 - 防误触握手、跨工作区、自动编号、降噪过滤、折叠排版
+
+## 配套项目
+
+量化数据采集管线与 [model-federation](https://github.com/SpiralQWQ/model-federation)（[Gitee 镜像](https://gitee.com/Spiral_QWQ/model-federation)）配套使用。后者提供多模型路由、通行证锁和 spec/ 架构规范。
 
 ## 开源协议
 

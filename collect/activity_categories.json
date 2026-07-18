@@ -1,0 +1,138 @@
+{
+  "_schema_version": "1.0",
+  "_description": "ActivityWatch 窗口标题分类映射表，用于 collect_daily_data.ps1",
+  "_last_updated": "2026-07-18",
+  "categories": [
+    {
+      "name": "coding",
+      "match": [
+        "Visual Studio Code",
+        "Code - OSS",
+        "Cursor",
+        "JetBrains",
+        "IntelliJ",
+        "PyCharm",
+        "CLion",
+        "Sublime Text",
+        "Vim",
+        "Neovim",
+        "Notepad++",
+        "GitHub Desktop",
+        "Sourcetree"
+      ],
+      "type": "keyword"
+    },
+    {
+      "name": "browsing",
+      "match": [
+        "Google Chrome",
+        "Chrome",
+        "Microsoft Edge",
+        "Firefox",
+        "Brave",
+        "Opera"
+      ],
+      "type": "keyword"
+    },
+    {
+      "name": "terminal",
+      "match": [
+        "Windows PowerShell",
+        "PowerShell",
+        "cmd.exe",
+        "cmd",
+        "Windows Terminal",
+        "Git Bash",
+        "WSL",
+        "bash",
+        "zsh",
+        "sh",
+        "ConEmu",
+        "FluentTerminal"
+      ],
+      "type": "keyword"
+    },
+    {
+      "name": "communication",
+      "match": [
+        "Slack",
+        "Discord",
+        "Teams",
+        "Microsoft Teams",
+        "Telegram",
+        "WeChat",
+        "微信",
+        "QQ",
+        "Zoom",
+        "钉钉",
+        "DingTalk"
+      ],
+      "type": "keyword"
+    },
+    {
+      "name": "document",
+      "match": [
+        "Word",
+        "Excel",
+        "PowerPoint",
+        "Notion",
+        "Obsidian",
+        "Typora",
+        "Markdown",
+        "Adobe Acrobat",
+        "PDF",
+        "WPS"
+      ],
+      "type": "keyword"
+    },
+    {
+      "name": "design",
+      "match": [
+        "Photoshop",
+        "Figma",
+        "Blender",
+        "Maya",
+        "Unity",
+        "Unreal Editor",
+        "Unreal Engine",
+        "Substance",
+        "ZBrush",
+        "After Effects",
+        "Premiere",
+        "剪映",
+        "CapCut"
+      ],
+      "type": "keyword"
+    },
+    {
+      "name": "music",
+      "match": [
+        "Spotify",
+        "NetEaseMusic",
+        "网易云音乐",
+        "QQ音乐",
+        "foobar2000"
+      ],
+      "type": "keyword"
+    },
+    {
+      "name": "other",
+      "match": ["*"],
+      "type": "catchall"
+    }
+  ],
+  "title_regex_rules": [
+    {"pattern": ".*Visual Studio Code.*", "category": "coding"},
+    {"pattern": ".*Code - OSS.*", "category": "coding"},
+    {"pattern": ".*Chrome.*", "category": "browsing"},
+    {"pattern": ".*Edge.*", "category": "browsing"},
+    {"pattern": ".*PowerShell.*", "category": "terminal"},
+    {"pattern": ".*Windows Terminal.*", "category": "terminal"},
+    {"pattern": ".*WeChat.*", "category": "communication"},
+    {"pattern": ".*微信.*", "category": "communication"},
+    {"pattern": ".*Obsidian.*", "category": "document"},
+    {"pattern": ".*Unity.*", "category": "design"},
+    {"pattern": ".*Unreal.*", "category": "design"},
+    {"pattern": ".*Blender.*", "category": "design"}
+  ]
+}

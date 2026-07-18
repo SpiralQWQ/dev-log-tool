@@ -1,0 +1,64 @@
+{
+  "_schema_version": "1.0",
+  "_description": "collect_daily_data.ps1 输出 JSON 的 Schema 定义",
+  "_last_updated": "2026-07-18",
+  "type": "object",
+  "required": ["date", "time_tracking", "repo_snapshot", "git_stats"],
+  "properties": {
+    "date": {
+      "type": "string",
+      "pattern": "^\\d{4}-\\d{2}-\\d{2}$",
+      "description": "采集日期，格式 YYYY-MM-DD"
+    },
+    "time_tracking": {
+      "type": "object",
+      "properties": {
+        "coding_minutes": {"type": ["integer", "null"], "description": "编码时长（分钟）"},
+        "browsing_minutes": {"type": ["integer", "null"], "description": "浏览时长（分钟）"},
+        "terminal_minutes": {"type": ["integer", "null"], "description": "终端时长（分钟）"},
+        "communication_minutes": {"type": ["integer", "null"], "description": "通讯时长（分钟）"},
+        "document_minutes": {"type": ["integer", "null"], "description": "文档时长（分钟）"},
+        "design_minutes": {"type": ["integer", "null"], "description": "设计/建模时长（分钟）"},
+        "music_minutes": {"type": ["integer", "null"], "description": "音乐时长（分钟）"},
+        "other_minutes": {"type": ["integer", "null"], "description": "其他时长（分钟）"},
+        "total_active_minutes": {"type": ["integer", "null"], "description": "活跃总时长（分钟）"},
+        "overlap_detected": {"type": "boolean", "description": "是否检测到时间重叠"}
+      }
+    },
+    "repo_snapshot": {
+      "type": ["object", "null"],
+      "properties": {
+        "language": {"type": ["string", "null"], "description": "主要编程语言"},
+        "lines_of_code": {"type": ["integer", "null"], "description": "代码行数"},
+        "files_count": {"type": ["integer", "null"], "description": "文件数量"},
+        "authors_count": {"type": ["integer", "null"], "description": "作者数量"}
+      }
+    },
+    "git_stats": {
+      "type": "object",
+      "properties": {
+        "commits_today": {"type": ["integer", "null"], "description": "今日提交数"},
+        "files_added": {"type": ["integer", "null"], "description": "新增文件数"},
+        "files_modified": {"type": ["integer", "null"], "description": "修改文件数"},
+        "files_deleted": {"type": ["integer", "null"], "description": "删除文件数"}
+      }
+    },
+    "terminal_history_sampled": {
+      "type": ["array", "null"],
+      "items": {"type": "string"},
+      "description": "今日终端命令采样（已脱敏）"
+    },
+    "terminal_warning": {
+      "type": ["string", "null"],
+      "description": "终端数据残余风险声明"
+    },
+    "quality_warning": {
+      "type": "boolean",
+      "description": "数据质量标记（偏差>20%时为 true）"
+    },
+    "error": {
+      "type": ["string", "null"],
+      "description": "采集过程中的错误信息，成功时为 null"
+    }
+  }
+}
