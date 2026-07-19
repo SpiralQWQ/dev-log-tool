@@ -91,7 +91,7 @@ dev-log-tool/
 ## Changelog
 
 ### V2.4 (2026-07-19)
-- **Privacy fix**: `collect_daily_data.ps1:32` hardcoded path `E:\AAA.Program\CC\程序员日志\Josn` → `$env:USERPROFILE\.claude\temp`
+- **Privacy fix**: `collect_daily_data.ps1:32` hardcoded local path → `$env:USERPROFILE\.claude\temp`
 - **Full privacy scan**: Both repos (29 files total) verified zero hardcoded paths, zero API key leaks
 - **[Link] [model-federation](https://github.com/SpiralQWQ/model-federation) V7.1**: Both repos pushed with matching spec pipeline format
 

@@ -91,7 +91,7 @@ dev-log-tool/
 ## 更新日志
 
 ### V2.4 (2026-07-19)
-- **隐私修复**：`collect_daily_data.ps1:32` 硬编码路径 `E:\AAA.Program\CC\程序员日志\Josn` → `$env:USERPROFILE\.claude\temp`
+- **隐私修复**：`collect_daily_data.ps1:32` 硬编码本地路径 → `$env:USERPROFILE\.claude\temp`
 - **全量隐私扫描**：两仓库（共 29 文件）确认零硬编码路径、零密钥泄露
 - **[联动] [model-federation](https://github.com/SpiralQWQ/model-federation) V7.1**：两仓库同步推送，spec 管线格式一致
 
