@@ -7,11 +7,11 @@
 
 ## 程序员日志（管线执行，禁止跳步）
 
-> **JIT 前置**：触发后先输出 `[JIT] Read log_templates.md + json_archive_and_collection_rules.md... Done.`
+> **JIT 前置**：触发后先输出 `[JIT] Read log_templates.md + data_toolchain.md + json_archive_and_collection_rules.md... Done.`
 > 然后按以下顺序执行，每步输出状态块：
 
-1. **[COLLECT]** `tools\collect_daily_data.ps1 -AllRepos`（禁止依赖定时任务）
-2. **[ARCHIVE]** 新版入 `程序员日志\Josn\`，同天旧版移入 `Josn\Prev\`
+1. **[COLLECT]** `tools\collect_daily_data.ps1 -AllRepos`（自动前置，无需单独说"采集"）
+2. **[ARCHIVE]** 新版入 `程序员日志\Josn\`，同天旧版移入 `Josn\Prev\`（自动前置）
 3. **[HEADER]** 8 字段头部（日期/会话起止/模型/Token/花费/变更记录/文件状态/量化快照）
    - 时间分类全部展开：编码/浏览/通信/其他/终端/文档/设计（禁止合并）
 4. **[MASK]** 密钥遮蔽：API Key/Token/密码必须 `***`
