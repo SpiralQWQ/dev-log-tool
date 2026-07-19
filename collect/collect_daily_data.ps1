@@ -28,8 +28,8 @@ param(
 # 修改为你的实际项目路径，或保持空数组仅用单仓库模式
 $WORKSPACE_ROOTS = @()
 
-# JSON 输出目录（默认为 ~/.claude/temp，修改为你的日志归档路径）
-$OUTPUT_BASE_DIR = "E:\AAA.Program\CC\程序员日志\Josn"
+# JSON 输出目录（默认为 %USERPROFILE%\.claude\temp，按需修改）
+$OUTPUT_BASE_DIR = "$env:USERPROFILE\.claude\temp"
 
 # ═══════════════════════════════════════════════════════════
 # 内 部 配 置 （通常无需修改）

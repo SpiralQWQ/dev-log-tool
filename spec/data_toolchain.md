@@ -1,68 +1,69 @@
-# 📊 量化数据采集管线
+# 数据采集工具链 — 管线阶段
 
-> 数据采集脚本在 `collect/` 目录下，供日志模板的"变更记录"和"量化快照"字段使用。
+> **所属管线**：Phase 2（执行）→ Phase 3（质检）→ Phase 4（交付）
+> **入口条件**：触发"程序员日志"场景（作为步骤 1 [COLLECT] 自动执行）
+> **用途**：采集脚本参数、数据源说明和敏感词过滤规则
+> **质量门禁**：Qwen + GLM 各自独立审查，均 ≥9.5 方通过
+
+---
+
+## 步骤 1：运行采集脚本
+
+- **动作**：`tools\collect_daily_data.ps1 -AllRepos`
+- **验证**：输出 JSON 文件存在且非空
+- **状态输出**：`[COLLECT] 采集完成: <输出JSON文件名>`
+
+## 步骤 2：验证采集完整性
+
+- **检查**：采集产出包含 ActivityWatch/onefetch/git log 三个数据源
+- **状态输出**：`[COLLECT] 数据源验证: 通过/缺XXX`
+
+## 步骤 3：敏感词过滤
+
+- **动作**：对 JSON 内容按 `tools/sensitive_patterns.json` 规则过滤
+- **状态输出**：`[MASK] 敏感词过滤: 通过`
+
+## 采集脚本
+
+`tools\collect_daily_data.ps1`
+
+**参数**：`-DryRun`（仅预览） | `-AllRepos`（遍历 CC/M.Unity/UEStudy）
+
+**输出**：`%USERPROFILE%\.claude\temp\daily_data_YYYYMMDD.json`
+
+**保留**：7 天自动清理
+
+**验证脚本**：`tools\verify_data_tools.ps1`
 
 ## 数据源
 
-| 数据源 | 用途 | 必需性 | 安装方式 |
-|--------|------|:-----:|---------|
-| **ActivityWatch** | 时间追踪分类（编码/浏览/终端等） | 可选 | [activitywatch.net](https://activitywatch.net/) 下载安装 |
-| **onefetch** | 仓库语言统计、代码行数、作者数 | 可选 | `winget install onefetch` 或加入 PATH |
-| **git** | 今日提交数、新增/修改/删除文件 | **必需** | 随 Git 安装自带 |
-| **PSReadLine** | 终端命令历史采样（已脱敏） | 可选 | Windows PowerShell 内置 |
+| 数据源 | 采集方式 | 产出字段 |
+|--------|---------|----------|
+| ActivityWatch (localhost:5600) | API /buckets/ | 编码/浏览/终端等分类时长 |
+| onefetch | `--output json` | 语言分布/代码行数/文件数/作者数 |
+| git log | `--after --numstat` | 今日提交数/增减文件数 |
+| PSReadLine 历史 | 时间段采样+双过滤 | 已脱敏命令列表 |
 
-## 安装步骤
+## 敏感词过滤
 
-### 1. ActivityWatch（可选）
+`tools/sensitive_patterns.json` — 白名单优先，黑名单阻断
 
-从 [activitywatch.net](https://activitywatch.net/) 下载安装包。启动后 `aw-watcher-window` 自动在后台运行。
+覆盖：API Key / Token / 密码 / JWT / 环境变量
 
-验证：访问 `http://127.0.0.1:5600` 看是否显示 Web UI。
+---
+## 质检门禁（Phase 3 — Qwen + GLM 各自独立审查，均≥9.5 方通过）
 
-### 2. onefetch（可选）
+### 检查项细则
 
-```bash
-winget install onefetch
-# 或从 GitHub Releases 下载 exe 加入 PATH
+| 检查项 | 具体判定标准 | Qwen 评分 | GLM 评分 |
+|--------|------------|:---------:|:--------:|
+| 采集已执行 | JSON 文件已生成且非空。未执行 → 扣 5 分 | /10 | /10 |
+| 三数据源完整 | ActivityWatch + onefetch + git log 均有数据。缺源 → 扣 3 分 | /10 | /10 |
+| 敏感词已过滤 | JSON 内无明文 API Key/Token/密码。发现明文 → 扣 5 分 | /10 | /10 |
+
+### 通过条件
+
 ```
-
-验证：`onefetch --version`
-
-### 3. 运行采集
-
-```powershell
-# 当前目录模式（单仓库）
-.\collect\collect_daily_data.ps1
-
-# 多仓库模式（需先编辑 $WORKSPACE_ROOTS 变量）
-.\collect\collect_daily_data.ps1 -AllRepos
-
-# 预览模式（不输出数据）
-.\collect\collect_daily_data.ps1 -DryRun
-```
-
-## 输出
-
-JSON 文件自动写入 `<日志根目录>\Josn\daily_data_YYYY-MM-DD_HHmm.json`（默认路径：`E:\AAA.Program\CC\程序员日志\Josn`）。
-
-```json
-{
-  "date": "2026-07-18",
-  "time_tracking": { "coding_minutes": 192, "browsing_minutes": 45, ... },
-  "repo_snapshot": { "language": "PowerShell", "lines_of_code": 28450, ... },
-  "git_stats": { "commits_today": 7, "files_added": 3, ... }
-}
-```
-
-## 日志自动融合
-
-数据采集完成后，下次触发 `程序员日志` 时，工作流会自动检测该 JSON 文件是否存在并读取量化字段。无需手动操作。若文件缺失，会询问是否要运行采集脚本。
-
-## 定时自动采集（可选）
-
-```powershell
-# 创建定时任务，每日 23:00 自动采集
-$action = New-ScheduledTaskAction -Execute "PowerShell.exe" -Argument "-File `"$(Get-Location)\collect\collect_daily_data.ps1`""
-$trigger = New-ScheduledTaskTrigger -Daily -At 23:00
-Register-ScheduledTask -TaskName "DevLogDailyCollect" -Action $action -Trigger $trigger -Force
+Qwen 评分 ≥ 9.5 AND GLM 评分 ≥ 9.5 → [质检] 裁决: 通过
+Qwen 评分 < 9.5 OR GLM 评分 < 9.5 → [质检] 裁决: 返工（标注扣分项）
 ```

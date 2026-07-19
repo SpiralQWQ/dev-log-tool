@@ -2,11 +2,11 @@
   <a href="README_zh.md"><kbd>🇨🇳 中文</kbd></a> · <kbd>🇺🇸 English</kbd>
 </p>
 
-<h1 align="center">Dev-Log Tool V2.2</h1>
+<h1 align="center">Dev-Log Tool V2.3</h1>
 <p align="center"><b>Cross-workspace developer journal for Claude Code — with quantified data fusion</b></p>
 
 <p align="center">
-  <img src="https://img.shields.io/badge/version-2.2-blue" alt="Version">
+  <img src="https://img.shields.io/badge/version-2.3-blue" alt="Version">
   <img src="https://img.shields.io/badge/license-MIT-brightgreen" alt="License">
 </p>
 
@@ -89,6 +89,12 @@ dev-log-tool/
 ```
 
 ## Changelog
+
+### V2.3 (2026-07-19)
+- **spec/data_toolchain.md pipelined**: Descriptive → 3-step executable pipeline with quality gate (≥9.5)
+- **spec/log_templates.md pre-read fix**: `json_archive` → `data_toolchain` (resolved missing file reference)
+- **CLAUDE_snippet.md cross-repo pointer**: Added billing_rules.md reference (points to CC main / model-federation)
+- **[Link] model-federation**: Both repos now share unified Phase 2→3→4 pipeline format
 
 ### V2.2 (2026-07-18)
 - **One-shot auto collect**: `程序员日志` trigger auto-runs `collect_daily_data.ps1` every time

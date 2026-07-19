@@ -7,7 +7,8 @@
 
 ## 程序员日志（管线执行，禁止跳步）
 
-> **JIT 前置**：触发后先输出 `[JIT] Read log_templates.md + data_toolchain.md + json_archive_and_collection_rules.md... Done.`
+> **JIT 前置**：触发后先输出 `[JIT] Read spec/log_templates.md + spec/data_toolchain.md... Done.`
+> Token 计费格式参见主项目 CC 的 `billing_rules.md`（含会话累计表）
 > 然后按以下顺序执行，每步输出状态块：
 
 1. **[COLLECT]** `tools\collect_daily_data.ps1 -AllRepos`（自动前置，无需单独说"采集"）
