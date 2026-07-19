@@ -93,13 +93,13 @@ dev-log-tool/
 ### V2.4 (2026-07-19)
 - **Privacy fix**: `collect_daily_data.ps1:32` hardcoded path `E:\AAA.Program\CC\程序员日志\Josn` → `$env:USERPROFILE\.claude\temp`
 - **Full privacy scan**: Both repos (29 files total) verified zero hardcoded paths, zero API key leaks
-- **[Link] model-federation V7.1**: Both repos pushed with matching spec pipeline format
+- **[Link] [model-federation](https://github.com/SpiralQWQ/model-federation) V7.1**: Both repos pushed with matching spec pipeline format
 
 ### V2.3 (2026-07-19)
 - **spec/data_toolchain.md pipelined**: Descriptive → 3-step executable pipeline with quality gate (≥9.5)
 - **spec/log_templates.md pre-read fix**: `json_archive` → `data_toolchain` (resolved missing file reference)
 - **CLAUDE_snippet.md cross-repo pointer**: Added billing_rules.md reference (points to CC main / model-federation)
-- **[Link] model-federation**: Both repos now share unified Phase 2→3→4 pipeline format
+- **[Link] [model-federation](https://github.com/SpiralQWQ/model-federation)**: Both repos now share unified Phase 2→3→4 pipeline format
 
 ### V2.2 (2026-07-18)
 - **One-shot auto collect**: `程序员日志` trigger auto-runs `collect_daily_data.ps1` every time
@@ -115,7 +115,7 @@ dev-log-tool/
 - **Data pipeline**: New `collect/` directory with generic script + 3 config files
 - **Dual deployment**: JIT routing table mode (model-federation compatible) and direct paste mode
 - **spec/data_toolchain.md**: Full installation guide for ActivityWatch, onefetch, and Windows scheduled tasks
-- **[Link] model-federation**: README cross-references between the two companion repos
+- **[Link] [model-federation](https://github.com/SpiralQWQ/model-federation)**: README cross-references between the two companion repos
 
 ### V2.0 (2026-07-18)
 - **Quantified data fusion**: ActivityWatch time categories + onefetch repo snapshot + git commit stats + terminal history

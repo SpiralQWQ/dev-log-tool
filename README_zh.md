@@ -93,13 +93,13 @@ dev-log-tool/
 ### V2.4 (2026-07-19)
 - **隐私修复**：`collect_daily_data.ps1:32` 硬编码路径 `E:\AAA.Program\CC\程序员日志\Josn` → `$env:USERPROFILE\.claude\temp`
 - **全量隐私扫描**：两仓库（共 29 文件）确认零硬编码路径、零密钥泄露
-- **[联动] model-federation V7.1**：两仓库同步推送，spec 管线格式一致
+- **[联动] [model-federation](https://github.com/SpiralQWQ/model-federation) V7.1**：两仓库同步推送，spec 管线格式一致
 
 ### V2.3 (2026-07-19)
 - **spec/data_toolchain.md 管线化**：纯描述 → 3 步可执行流程 + 质检门禁（≥9.5 通过）
 - **spec/log_templates.md 前置引用修正**：`json_archive` → `data_toolchain`（文件不存在问题修复）
 - **CLAUDE_snippet.md 跨仓库引用**：补充 billing_rules.md 指针（指向 CC 主项目 / model-federation）
-- **[联动] model-federation**：两个仓库 spec 格式统一为 Phase 2→3→4 管线标准
+- **[联动] [model-federation](https://github.com/SpiralQWQ/model-federation)**：两个仓库 spec 格式统一为 Phase 2→3→4 管线标准
 
 ### V2.2 (2026-07-18)
 - **一步到位自动采集**：每次「程序员日志」自动运行 `collect_daily_data.ps1`，不再询问是否采集
@@ -115,7 +115,7 @@ dev-log-tool/
 - **数据采集管线**：新增 `collect/` 目录，包含通用采集脚本 + 3 个配置文件
 - **双模部署**：支持 JIT 路由表模式（适合 model-federation 用户）和直接粘贴模式
 - **spec/data_toolchain.md**：量化数据管线的完整安装指南 + Windows 定时任务示例
-- **[联动] model-federation**：两仓库 README 互相引用，配套使用
+- **[联动] [model-federation](https://github.com/SpiralQWQ/model-federation)**：两仓库 README 互相引用，配套使用
 
 ### V2.0 (2026-07-18)
 - **量化数据集成**：ActivityWatch 时间分类 + onefetch 仓库快照 + git 提交统计 + 终端历史
