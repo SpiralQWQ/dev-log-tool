@@ -2,11 +2,11 @@
   <kbd>🇨🇳 中文</kbd> · <a href="README.md"><kbd>🇺🇸 English</kbd></a>
 </p>
 
-<h1 align="center">Dev-Log Tool V2.3</h1>
+<h1 align="center">Dev-Log Tool V2.4</h1>
 <p align="center"><b>跨工作区的 Claude Code 开发者日志归档工具 — 含量化数据集成</b></p>
 
 <p align="center">
-  <img src="https://img.shields.io/badge/version-2.3-blue" alt="Version">
+  <img src="https://img.shields.io/badge/version-2.4-blue" alt="Version">
   <img src="https://img.shields.io/badge/license-MIT-brightgreen" alt="License">
 </p>
 
@@ -89,6 +89,11 @@ dev-log-tool/
 ```
 
 ## 更新日志
+
+### V2.4 (2026-07-19)
+- **隐私修复**：`collect_daily_data.ps1:32` 硬编码路径 `E:\AAA.Program\CC\程序员日志\Josn` → `$env:USERPROFILE\.claude\temp`
+- **全量隐私扫描**：两仓库（共 29 文件）确认零硬编码路径、零密钥泄露
+- **[联动] model-federation V7.1**：两仓库同步推送，spec 管线格式一致
 
 ### V2.3 (2026-07-19)
 - **spec/data_toolchain.md 管线化**：纯描述 → 3 步可执行流程 + 质检门禁（≥9.5 通过）

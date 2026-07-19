@@ -2,11 +2,11 @@
   <a href="README_zh.md"><kbd>🇨🇳 中文</kbd></a> · <kbd>🇺🇸 English</kbd>
 </p>
 
-<h1 align="center">Dev-Log Tool V2.3</h1>
+<h1 align="center">Dev-Log Tool V2.4</h1>
 <p align="center"><b>Cross-workspace developer journal for Claude Code — with quantified data fusion</b></p>
 
 <p align="center">
-  <img src="https://img.shields.io/badge/version-2.3-blue" alt="Version">
+  <img src="https://img.shields.io/badge/version-2.4-blue" alt="Version">
   <img src="https://img.shields.io/badge/license-MIT-brightgreen" alt="License">
 </p>
 
@@ -89,6 +89,11 @@ dev-log-tool/
 ```
 
 ## Changelog
+
+### V2.4 (2026-07-19)
+- **Privacy fix**: `collect_daily_data.ps1:32` hardcoded path `E:\AAA.Program\CC\程序员日志\Josn` → `$env:USERPROFILE\.claude\temp`
+- **Full privacy scan**: Both repos (29 files total) verified zero hardcoded paths, zero API key leaks
+- **[Link] model-federation V7.1**: Both repos pushed with matching spec pipeline format
 
 ### V2.3 (2026-07-19)
 - **spec/data_toolchain.md pipelined**: Descriptive → 3-step executable pipeline with quality gate (≥9.5)
